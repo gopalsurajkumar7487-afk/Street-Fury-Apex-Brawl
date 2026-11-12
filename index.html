@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>STREET FURY: APEX BRAWL</title>
+    <style>
+        body { margin: 0; background: #000; overflow: hidden; font-family: sans-serif; touch-action: none; display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; }
+        canvas { background: #111; border: 2px solid #444; width: 100%; max-width: 400px; height: 300px; }
+        #ui { width: 100%; max-width: 400px; display: grid; grid-template-columns: repeat(4, 1fr); gap: 5px; padding: 10px; background: #222; box-sizing: border-box; }
+        .btn { background: #ff3333; border: none; color: #fff; font-size: 13px; font-weight: bold; padding: 15px 0; border-radius: 6px; text-align: center; user-select: none; }
+        .btn:active { background: #ffcc00; color: #000; }
+    </style>
+</head>
+<body>
+    <canvas id="gameCanvas" width="400" height="300"></canvas>
+    <div id="ui">
+        <div class="btn" id="btnPunch">PUNCH</div>
+        <div class="btn" id="btnKick">KICK</div>
+        <div class="btn" id="btnGrab">GRAB</div>
+        <div class="btn" id="btnSuper">SUPER</div>
+    </div>
+    <script>
+        const canvas = document.getElementById('gameCanvas');
+        const ctx = canvas.getContext('2d');
+
+        let player = { x: 50, y: 180, width: 40, height: 70, color: '#ff3333', state: 'IDLE' };
+        let enemy = { x: 300, y: 180, width: 40, height: 70, color: '#3333ff' };
+        let battleLog = "FIGHT START!";
+
+        document.getElementById('btnPunch').addEventListener('touchstart', () => {
+            player.state = 'PUNCH';
+            battleLog = "Player PUNCH!";
+            setTimeout(() => { player.state = 'IDLE'; }, 300);
+        });
+
+        document.getElementById('btnKick').addEventListener('touchstart', () => {
+            player.state = 'KICK';
+            battleLog = "Player KICK!";
+            setTimeout(() => { player.state = 'IDLE'; }, 300);
+        });
+
+        document.getElementById('btnGrab').addEventListener('touchstart', () => {
+            player.state = 'GRAB';
+            battleLog = "Player GRAB!";
+            setTimeout(() => { player.state = 'IDLE'; }, 400);
+        });
+
+        document.getElementById('btnSuper').addEventListener('touchstart', () => {
+            player.state = 'SUPER';
+            battleLog = "APEX SUPER MOVE!";
+            setTimeout(() => { player.state = 'IDLE'; }, 500);
+        });
+
+        function update() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.fillStyle = "#1a1a1a";
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            ctx.fillStyle = "#444";
+            ctx.fillRect(0, 250, canvas.width, 50);
+
+            ctx.fillStyle = "#ffcc00";
+            ctx.font = "bold 14px sans-serif";
+            ctx.fillText("STREET FURY: APEX BRAWL", 70, 30);
+
+            ctx.fillStyle = player.color;
+            ctx.fillRect(player.x, player.y, player.width, player.height);
+            ctx.fillStyle = enemy.color;
+            ctx.fillRect(enemy.x, enemy.y, enemy.width, enemy.height);
+
+            ctx.fillStyle = "#fff";
+            ctx.font = "14px sans-serif";
+            ctx.fillText(battleLog, 120, 80);
+        }
+        setInterval(update, 1000 / 60);
+    </script>
+</body>
+</html>
